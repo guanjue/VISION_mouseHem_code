@@ -5,8 +5,10 @@ library(changepoint)
 args = commandArgs(trailingOnly=TRUE)
 
 signal_track_file = args[1]
-input_track_file = args[2]
-output_name = args[3]
+signal_folder = args[2]
+input_track_file = args[3]
+input_folder = args[4]
+output_name = args[5]
 
 mean_vec = c()
 var_vec = c()
@@ -14,8 +16,8 @@ size_vec = c()
 prob_vec = c()
 
 ### read data
-sig = read.table(signal_track_file, header = F)
-input = read.table(input_track_file, header = F)
+sig = read.table(paste(signal_folder, signal_track_file, sep=''), header = F)
+input = read.table(paste(input_folder, input_track_file, sep=''), header = F)
 thesh = 0
 
 #####################################################################################################################
