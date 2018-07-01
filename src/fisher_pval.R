@@ -43,8 +43,8 @@ write.table(fisher_p, paste(cell_marker, '.fisher_p.txt', sep=''), quote=FALSE, 
 ### write FRiP & SNRs
 pk_sig = fisher_p[fisher_p>-log10(0.001)]
 bg_sig = fisher_p[fisher_p<=-log10(0.001)]
-SNR = mean(pk_sig) / mean(bg_sig)
 FRiP = sum(pk_sig) / sum(bg_sig)
+SNR = mean(pk_sig) / mean(bg_sig)
 
 write.table(c(FRiP, SNR), paste(cell_marker, '.fisher_p.frip_snr.txt', sep=''), quote=FALSE, col.names=FALSE, row.names=FALSE, sep='\t')
 
