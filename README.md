@@ -39,7 +39,8 @@ info_table_all.rc2nbp.txt
 
 ##### The input filename list for VISION mouse pipeline: each column is separated by tab
 ###### 1st column: target dataset; 
-###### 2nd column: the no antibody control file for the target dataset; 
+###### 2nd column: the no antibody control file for the target dataset; Here, we used the same merge input file base on the 21 input files from 11 cell types. For each input file, it is first normalized to ER4.137.input.signal input dataset based the ratio of total reads count. Then, the same merge input file is the mean signal of the 21 normalized the input files. 
+###### For the atac-seq without input signal. We used a input file with all bins equal to one as the input signal.
 ```
 info_table_all.rc2nbp.txt
 >>> head info_table_all.rc2nbp.txt
