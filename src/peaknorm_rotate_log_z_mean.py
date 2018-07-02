@@ -91,7 +91,7 @@ def NewtonRaphsonMethod(sig1_pk,sig1_bg, sig2_pk,sig2_bg, A,B, moment, converge_
 
 ################################################################################################
 ###
-def pknorm(wg_bed, peak_bed, sample_num, sig1_col_list, sig1_wg_raw, sig2_col_list, sig2_wg_raw, upperlim, lowerlim):
+def pknorm(sample_num, sig1_wg_raw, sig2_wg_raw, upperlim, lowerlim):
 	sig1_output_name = sig1_wg_raw.split('.')[0]
 	sig2_output_name = sig2_wg_raw.split('.')[0]
 
@@ -259,41 +259,32 @@ def pknorm(wg_bed, peak_bed, sample_num, sig1_col_list, sig1_wg_raw, sig2_col_li
 
 
 ############################################################################
-#time python plot_violin.py -i atac_list.txt -o atac_list -l T -s 2 -l 4 -u 100
 
 import getopt
 import sys
 def main(argv):
 	try:
-		opts, args = getopt.getopt(argv,"hw:p:n:a:b:c:d:u:l:")
+		opts, args = getopt.getopt(argv,"hn:a:b:u:l:")
 	except getopt.GetoptError:
-		print 'time python index_label2meansig.py -i input_file_list -o outputname -l log2 -s small_num -d lowerlim -u upperlim'
+		print 'time python peaknorm_rotate_log_z_mean.py -n sample_num -a reference_dataset -b target_dataset -u upperlim -l lowerlim'
 		sys.exit(2)
 
 	for opt,arg in opts:
 		if opt=="-h":
-			print 'time python index_label2meansig.py -i input_file_list -o outputname -l log2 -s small_num -d lowerlim -u upperlim'
+			print 'time python peaknorm_rotate_log_z_mean.py -n sample_num -a reference_dataset -b target_dataset -u upperlim -l lowerlim'
 			sys.exit()
-		elif opt=="-w":
-			wg_bed=str(arg.strip())
-		elif opt=="-p":
-			peak_bed=str(arg.strip())
 		elif opt=="-n":
-			sample_num=int(arg.strip())
+			sample_num=int(arg.strip())		
 		elif opt=="-a":
-			sig1_col_list=str(arg.strip())			
+			sig1_wg_raw=str(arg.strip())					
 		elif opt=="-b":
-			sig1_wg_raw=str(arg.strip())		
-		elif opt=="-c":
-			sig2_col_list=str(arg.strip())			
-		elif opt=="-d":
 			sig2_wg_raw=str(arg.strip())		
 		elif opt=="-u":
 			upperlim=float(arg.strip())
 		elif opt=="-l":
 			lowerlim=float(arg.strip())
 
-	pknorm(wg_bed, peak_bed, sample_num, sig1_col_list, sig1_wg_raw, sig2_col_list, sig2_wg_raw, upperlim, lowerlim)
+	pknorm(sample_num, sig1_wg_raw, sig2_wg_raw, upperlim, lowerlim)
 
 if __name__=="__main__":
 	main(sys.argv[1:])
