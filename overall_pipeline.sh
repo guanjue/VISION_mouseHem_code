@@ -46,7 +46,7 @@ do
 	time Rscript $script_dir'get_mk_ref.R' $mk'.file_list.txt' $mk'.ref_frip.txt'
 done
 ### select top reference dataset for cross mark pknorm
-time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref_frip.txt
+time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref.txt
 
 
 
@@ -66,11 +66,43 @@ do
 	cat $sig2 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig2'.upperlim.txt' 
 	### peak norm
 	time python $script_dir'peaknorm_rotate_log_ref_mean.py' -n 500000 -a $sig1'.upperlim.txt' -b $sig2'.upperlim.txt' -u $upperlim -l $lowerlim
-done < cross_mark_ref_frip.txt.info.txt
+	### rm tmp files
+	rm $sig1'.upperlim.txt'
+	rm $sig2'.upperlim.txt'
+done < cross_mark_ref.txt.info.txt
+
+### move ref norm files into ref_info folder
+if [ -d $working_dir'ref_info/' ]; then echo $working_dir'ref_info/' exist; else mkdir $working_dir'ref_info/'; fi
+mv *.pknorm.scatterplot.png $working_dir'ref_info/'
+mv *.scatterplot.png $working_dir'ref_info/'
+mv *.ref.info.txt $working_dir'ref_info/'
+
 
 
 ###### pknorm across datasets with the same mark
-
+for mk in $(cat mark_list.txt)
+do
+	echo $mk
+	while read LINE
+	do
+		sig1=$(echo "$LINE" | awk '{print $1}')
+		sig2=$(echo "$LINE" | awk '{print $2}')
+		sig2_celltype=$(echo "$LINE" | awk '{print $2}' | awk -F '.' -v OFS='\t' '{print $1"_"$2}')
+		upperlim=100
+		lowerlim=0
+		echo $sig1 
+		echo $sig2
+		echo $sig2_celltype
+		### set upper limit
+		cat $sig1 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig1'.upperlim.txt'
+		cat $sig2 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig2'.upperlim.txt' 
+		### peak norm
+		time python $script_dir'peaknorm_rotate_log_z_mean.py' -n 500000 -a $sig1'.upperlim.txt' -b $sig2'.upperlim.txt' -u $upperlim -l $lowerlim
+		### rm tmp files
+		rm $sig1'.upperlim.txt'
+		rm $sig2'.upperlim.txt'
+	done < $mk'.ref_frip.txt.info.txt'
+done
 
 
 
