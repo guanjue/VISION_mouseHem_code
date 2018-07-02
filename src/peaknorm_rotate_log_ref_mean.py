@@ -92,8 +92,8 @@ def NewtonRaphsonMethod(sig1_pk,sig1_bg, sig2_pk,sig2_bg, A,B, moment, converge_
 ################################################################################################
 ###
 def pknorm(sample_num, sig1_wg_raw, sig2_wg_raw, upperlim, lowerlim):
-	sig1_output_name = sig1_wg_raw.split('.')[0]+'_'+sig1_wg_raw.split('.')[1]
-	sig2_output_name = sig2_wg_raw.split('.')[0]+'_'+sig2_wg_raw.split('.')[1]
+	sig1_output_name = sig1_wg_raw.split('.')[0]+'.'+sig1_wg_raw.split('.')[1]
+	sig2_output_name = sig2_wg_raw.split('.')[0]+'.'+sig2_wg_raw.split('.')[1]
 
 	### add small_number
 	small_num = 1e-1
@@ -192,11 +192,11 @@ def pknorm(sample_num, sig1_wg_raw, sig2_wg_raw, upperlim, lowerlim):
 	sig1_FRiP = np.sum(sig1[(sig1_binary[:,0]!=0),0]) / np.sum(sig1)
 
 	### write output: normalized signal
-	write2d_array(sig2_norm, sig2_output_name + '.pknorm.txt')
+	write2d_array(sig2_norm, sig2_output_name + '.pknorm.ref.txt')
 
 	### write output: sf & FRiP
 	info = np.array([[total_mean_sf, B, A], [sig1_FRiP, sig2_norm_FRiP, sig2_FRiP]])
-	write2d_array(info, sig2_output_name + '.info.txt')
+	write2d_array(info, sig2_output_name + '.ref.info.txt')
 
 
 	### plot scatter plot

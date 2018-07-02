@@ -65,13 +65,8 @@ do
 	cat $sig1 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig1'.upperlim.txt'
 	cat $sig2 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig2'.upperlim.txt' 
 	### peak norm
-	time python $script_dir'peaknorm_rotate_log_ref_mean.py' -w /storage/home/gzx103/scratch/vision/5end/pknorm_16lim/200_noblack.11_22_2017.bed -p $mark'TablePeaksFiltered.txt' -n 500000 -a 1 -b $sig1'.upperlim.txt' -c 1 -d $sig2'.upperlim.txt' -u $upperlim -l $lowerlim
-done < raw_sig_list.txt
-
-
-
-
-
+	time python $script_dir'peaknorm_rotate_log_ref_mean.py' -n 500000 -a $sig1'.upperlim.txt' -b $sig2'.upperlim.txt' -u $upperlim -l $lowerlim
+done < cross_mark_ref_frip.txt.info.txt
 
 
 ###### pknorm across datasets with the same mark
