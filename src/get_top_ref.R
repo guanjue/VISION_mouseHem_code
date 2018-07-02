@@ -38,6 +38,6 @@ SNR_ref = SNR_list[which.max(FRiP_list)]
 
 write.table(c(ref_file, frip_ref, SNR_ref), output_name, sep='\t', quote=F, col.names=F, row.names=F)
 
-pknorm_list = cbind(rep(ref_file, dim(file_list)[1]), file_list)
+pknorm_list = cbind(rep(ref_file, length(file_list)), file_list)
 write.table(pknorm_list, paste(output_name, '.info.txt', sep=''), sep='\t', quote=F, col.names=F, row.names=F)
 
