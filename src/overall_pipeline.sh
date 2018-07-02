@@ -14,7 +14,7 @@ do
 	sig1=$(echo "$LINE" | awk '{print $1}')
 	sig2=$(echo "$LINE" | awk '{print $2}')
 	echo $sig1 $sig2
-	time Rscript $script_dir'negative_binomial_p_2r_bgadj.R' $sig1 $input_dir $sig2 $input_dir $sig1
+	if time Rscript $script_dir'negative_binomial_p_2r_bgadj.R' $sig1 $input_dir $sig2 $input_dir $sig1; then echo 'covert reads count to NB p-value DONE'; else echo 'ERROR: covert reads count to NB p-value' && exit 1; fi
 done < $input_file_list
 
 
@@ -29,11 +29,11 @@ ls *.nbp_2r_bgadj.txt | awk -F '.' -v OFS='\t' '{print $1}' | sort -u > cell_lis
 if [ -d $working_dir'nbp/' ]; then echo $working_dir'nbp/' exist; else mkdir $working_dir'nbp/'; fi
 mv *.nbp_2r_bgadj.txt $working_dir'nbp/'
 mv *.mvsp.txt $working_dir'nbp/'
-### get Fisher's method combined pval
+### get Fisher's method merged pval
 for cm in $(cat cell_marker_list.txt)
 do
 	echo $cm
-	Rscript $script_dir'fisher_pval.R' $cm '.nbp_2r_bgadj.txt' $working_dir'nbp/' 100
+	if time Rscript $script_dir'fisher_pval.R' $cm '.nbp_2r_bgadj.txt' $working_dir'nbp/' 100; then echo 'get Fisher method merged pval DONE'; else echo 'ERROR: get Fishers method merged pval' && exit 1; fi
 done
 
 
@@ -43,10 +43,10 @@ for mk in $(cat mark_list.txt)
 do
 	echo $mk
 	ls *$mk*.frip_snr.txt > $mk'.file_list.txt'
-	time Rscript $script_dir'get_mk_ref.R' $mk'.file_list.txt' $mk'.ref_frip.txt'
+	if time Rscript $script_dir'get_mk_ref.R' $mk'.file_list.txt' $mk'.ref_frip.txt'; then echo 'select reference dataset for pknorm'; else echo 'ERROR: select reference dataset for pknorm' && exit 1; fi
 done
 ### select top reference dataset for cross mark pknorm
-time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref_list.txt
+if time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref_list.txt; then echo 'select top reference dataset for cross mark pknorm DONE'; else echo 'ERROR: select top reference dataset for cross mark pknorm' && exit 1; fi
 
 
 
@@ -65,7 +65,7 @@ do
 	cat $sig1 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig1'.upperlim.txt'
 	cat $sig2 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig2'.upperlim.txt' 
 	### peak norm
-	time python $script_dir'peaknorm_rotate_log_ref_mean.py' -n 500000 -a $sig1'.upperlim.txt' -b $sig2'.upperlim.txt' -u $upperlim -l $lowerlim
+	if time python $script_dir'peaknorm_rotate_log_ref_mean.py' -n 500000 -a $sig1'.upperlim.txt' -b $sig2'.upperlim.txt' -u $upperlim -l $lowerlim; then echo 'pknorm normalize reference DONE'; else echo 'ERROR: pknorm normalize reference' && exit 1; fi
 	### rm tmp files
 	rm $sig1'.upperlim.txt'
 	rm $sig2'.upperlim.txt'
@@ -96,7 +96,7 @@ do
 		cat $sig1 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig1'.upperlim.txt'
 		cat $sig2 | awk -F '\t' -v OFS='\t' -v ul=$upperlim '{if ($1>=ul) print ul; else print $1}' > $sig2'.upperlim.txt' 
 		### peak norm
-		time python $script_dir'peaknorm_rotate_log_z_mean.py' -n 500000 -a $sig1'.upperlim.txt' -b $sig2'.upperlim.txt' -u $upperlim -l $lowerlim
+		if time python $script_dir'peaknorm_rotate_log_z_mean.py' -n 500000 -a $sig1'.upperlim.txt' -b $sig2'.upperlim.txt' -u $upperlim -l $lowerlim; then echo 'pknorm across datasets DONE'; else echo 'ERROR: pknorm across datasets' && exit 1; fi
 		### rm tmp files
 		rm $sig1'.upperlim.txt'
 		rm $sig2'.upperlim.txt'
@@ -130,7 +130,7 @@ mv *.frip_snr.txt $working_dir'fisherp/'
 for filename in $(cat cell_marker_list.txt)
 do
 	echo $filename
-	cat $working_dir'pknorm_sig/'$filename'.pknorm.txt' | awk -F '\t' -v OFS='\t' -v ul=$overall_upper -v ll=$overall_lower '{if ($1<ll) print ll; else if ($1>ul) print ul; else print $1}' > $filename'.pknorm.'$overall_lower'_'$overall_upper'.txt'
+	if cat $working_dir'pknorm_sig/'$filename'.pknorm.txt' | awk -F '\t' -v OFS='\t' -v ul=$overall_upper -v ll=$overall_lower '{if ($1<ll) print ll; else if ($1>ul) print ul; else print $1}' > $filename'.pknorm.'$overall_lower'_'$overall_upper'.txt'; then echo 'set limit for signals DONE'; else echo 'ERROR: set limit for signals' && exit 1; fi
 done
 ### mv to the output folder
 if [ -d $working_dir'pknorm_'$overall_lower'_'$overall_upper'_sig/' ]; then echo $working_dir'pknorm_'$overall_lower'_'$overall_upper'_sig/' exist; else mkdir $working_dir'pknorm_'$overall_lower'_'$overall_upper'_sig/'; fi
