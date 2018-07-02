@@ -25,7 +25,7 @@ for (i in c(1:length(ref_file_list))){
 	SNR_list[i] = as.numeric(as.character(parameters[3,]))
 }
 
-print(dim(parameters_files))
+
 print(FRiP_list)
 print(which.max(FRiP_list))
 print(SNR_list)

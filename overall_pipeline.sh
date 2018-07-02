@@ -46,7 +46,7 @@ do
 	time Rscript $script_dir'get_mk_ref.R' $mk'.file_list.txt' $mk'.ref_frip.txt'
 done
 ### select top reference dataset for cross mark pknorm
-time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $input_dir cross_mark_ref_frip.txt
+time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref_frip.txt
 
 
 
