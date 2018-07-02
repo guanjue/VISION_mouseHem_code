@@ -26,14 +26,15 @@ print(SNR_list)
 print(which.max(SNR_list))
 
 
-ref_file = sub('.frip_snr.txt', '.ref.txt', toString(parameters_files[which.max(FRiP_list),1]))
+ref_file = sub('.frip_snr.txt', '.txt', toString(parameters_files[which.max(FRiP_list),1]))
 frip_ref = FRiP_list[which.max(FRiP_list)]
 SNR_ref = SNR_list[which.max(FRiP_list)]
 
 write.table(c(ref_file, frip_ref, SNR_ref), output_name, sep='\t', quote=F, col.names=F, row.names=F)
 
+ref_file_final = sub('.frip_snr.txt', '.txt', toString(parameters_files[which.max(FRiP_list),1]))
 parameters_files_name = apply(parameters_files, 1, function(x) sub('.frip_snr.txt', '.txt', x))
 
-pknorm_list = cbind(rep(ref_file, dim(parameters_files)[1]), parameters_files_name)
+pknorm_list = cbind(rep(ref_file_final, dim(parameters_files)[1]), parameters_files_name)
 write.table(pknorm_list, paste(output_name, '.info.txt', sep=''), sep='\t', quote=F, col.names=F, row.names=F)
 
