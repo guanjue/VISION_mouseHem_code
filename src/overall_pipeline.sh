@@ -46,7 +46,7 @@ do
 	time Rscript $script_dir'get_mk_ref.R' $mk'.file_list.txt' $mk'.ref_frip.txt'
 done
 ### select top reference dataset for cross mark pknorm
-time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref.txt
+time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref_list.txt
 
 
 
@@ -69,7 +69,7 @@ do
 	### rm tmp files
 	rm $sig1'.upperlim.txt'
 	rm $sig2'.upperlim.txt'
-done < cross_mark_ref.txt.info.txt
+done < cross_mark_ref_list.txt.info.txt
 ### move ref norm files into ref_info folder
 if [ -d $working_dir'ref_info/' ]; then echo $working_dir'ref_info/' exist; else mkdir $working_dir'ref_info/'; fi
 mv *.pknorm.scatterplot.png $working_dir'ref_info/'
@@ -110,11 +110,22 @@ mv *.info.txt $working_dir'pknorm_info/'
 
 
 
-###### mv PKnorm normalized signal file into *_sig folders
+###### mv PKnorm normalized signal files & unnormalized signal files into *_sig folders
+### pknorm signal
 if [ -d $working_dir'pknorm_sig/' ]; then echo $working_dir'pknorm_sig/' exist; else mkdir $working_dir'pknorm_sig/'; fi
 mv *.pknorm.txt $working_dir'pknorm_sig/'
+### ref pknorm signal
 if [ -d $working_dir'pknorm_ref_sig/' ]; then echo $working_dir'pknorm_ref_sig/' exist; else mkdir $working_dir'pknorm_ref_sig/'; fi
 mv *.pknorm.ref.txt $working_dir'pknorm_ref_sig/'
+### ref frip & snp
+mv *.ref_frip.txt $working_dir'ref_info/'
+### fisher pvalue signal without normalization
+if [ -d $working_dir'fisherp/' ]; then echo $working_dir'fisherp/' exist; else mkdir $working_dir'fisherp/'; fi
+mv *.fisher_p.txt $working_dir'fisherp/'
+mv *.frip_snr.txt $working_dir'fisherp/'
+### list files
+if [ -d $working_dir'list_files/' ]; then echo $working_dir'list_files/' exist; else mkdir $working_dir'list_files/'; fi
+mv *list.txt $working_dir'list_files/'
 
 
 
