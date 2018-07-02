@@ -14,8 +14,8 @@ for (i in c(1:dim(parameters_files)[1])){
         file=toString(parameters_files[i,1])
         parameters = read.table(file, header=F)
         ### FRiP score is in the 5th column
-        FRiP_list[i] = parameters[1]
-        SNR_list[i] = parameters[2]
+        FRiP_list[i] = parameters[1,]
+        SNR_list[i] = parameters[2,]
 }
 print(dim(parameters_files))
 print(FRiP_list)

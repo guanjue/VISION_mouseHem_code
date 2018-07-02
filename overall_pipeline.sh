@@ -21,7 +21,7 @@ done < info_table_all.rc2nbp.txt
 ###### convert nbp to Fisher's method merged p-value
 ### extrac cell type mark list
 ls *.nbp_2r_bgadj.txt | awk -F '.' -v OFS='\t' '{print $1"."$2}' | sort -u > cell_marker_list.txt
-ls *.nbp_2r_bgadj.txt | awk -F '.' -v OFS='\t' '{print $2}' | sort -u > marker_list.txt
+ls *.nbp_2r_bgadj.txt | awk -F '.' -v OFS='\t' '{print $2}' | sort -u > mark_list.txt
 ls *.nbp_2r_bgadj.txt | awk -F '.' -v OFS='\t' '{print $1}' | sort -u > cell_list.txt
 
 ### move data NB p-value data into nbp folder
