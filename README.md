@@ -15,6 +15,13 @@
 ```
 git clone https://github.com/guanjue/vision_mouse.git
 ```
+#### Install dependency: go to vision_mouse folder and run the following command
+```
+time bash INSTALL.sh
+```
+
+
+
 ##### The input file list for VISION mouse pipeline: 
 ###### 1st column: the signal of each bin;
 ###### all of the input file should be saved in the input folder (input_dir)
