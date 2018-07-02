@@ -5,7 +5,7 @@
 
 <img src="https://github.com/guanjue/vision_mouse/blob/master/example_figures/rc2pknorm.png" width="800"/>
 
-##### Figure 1. Illustration of the signal track before and after data preprocessing pipeline. In this pipeline, we started with the reads count of 5'-end in each 200-bp bin and end with PKnorm normalized -log10(p-value) based on a dynamic negative binomial model. In the pipeline, we first counted the number of reads in each of the 200-bp bin. Then, we used a two rounds negative binomial model to convert the reads count to the -log10(p-value). For replicates p-value of the same data, we used the Fisher's method to merge them. In the third step, we used the PKnorm normalization to normalize both the sequencing depth and the the signal-to-noise ratio of these fisher-merged-p-values. In the third step, we first selected the dataset with highest Fraction of signal in peaks (FRiP score) as the reference dataset for each mark. These reference dataset were normalized by a modified PKnorm method (matching the mean signal of all peaks in each two datasets, instead of only matching mean signal of the common peak regions). Then, we used the cross mark normalized reference dataset as the reference dataset to normalize each dataset with the same mark. To avoid outlier effects, we limit our data by set a upper limit equals to 16 (Left) Before the data preprocessing, the signal of the peak regions are not comparable across all dataset. (Middle) We first convert the reads count to -log10(p-value) based on a dynamic negative binomial background model. (Right) After the PKnorm the signal of the peak regions and the background regions become more comparable across all datasets.
+##### Figure 1. Illustration of the signal track before and after data preprocessing pipeline. In this pipeline, we started with the reads count of 5'-end in each 200-bp bin and end with PKnorm normalized -log10(p-value) based on a dynamic negative binomial (NB) model. In the pipeline, we first counted the number of reads in each of the 200-bp bin. Then, we used a two rounds negative binomial model to convert the reads count to the -log10(p-value). For replicates p-value of the same data, we used the Fisher's method to merge them. In the third step, we used the PKnorm normalization to normalize both the sequencing depth and the the signal-to-noise ratio of these fisher-merged-p-values. In the third step, we first selected the dataset with highest Fraction of signal in peaks (FRiP score) as the reference dataset for each mark. These reference dataset were normalized by a modified PKnorm method (matching the mean signal of all peaks in each two datasets, instead of only matching mean signal of the common peak regions). Then, we used the cross mark normalized reference dataset as the reference dataset to normalize each dataset with the same mark. To avoid outlier effects, we limit our data by set a upper limit equals to 16 (Left) Before the data preprocessing, the signal of the peak regions are not comparable across all dataset. (Middle) We first convert the reads count to -log10(p-value) based on a dynamic negative binomial background model. (Right) After the PKnorm the signal of the peak regions and the background regions become more comparable across all datasets.
 
 
 
@@ -15,25 +15,29 @@
 ```
 git clone https://github.com/guanjue/vision_mouse.git
 ```
-
-
-## Input data
-##### The parameter file for IDEAS. 
+##### The input file list for VISION mouse pipeline: 
+###### 1st column: the signal of each bin;
+###### all of the input file should be saved in the input folder (input_dir)
 ```
-run_IDEAS.parafile
-```
-##### Usually, user only needs to change the following parameters in the parameter file:
-```
-script_dir
-working_dir
-input_file_list
-input_dir
-overall_upper
-overall_lower
+info_table_all.rc2nbp.txt
+>>> head -1000000 B_SPL.h3k27acrep.100035.bamtobed5endintersect.signal | tail -20
+0
+0
+0
+1
+1
+0
+0
+0
+2
+0
+0
+0
+0
+4
 ```
 
-
-##### The bin file for IDEAS: each column is separated by whitespace
+##### The input filename list for VISION mouse pipeline: each column is separated by tab
 ###### 1st column: target dataset; 
 ###### 2nd column: the no antibody control file for the target dataset; 
 ```
@@ -47,10 +51,12 @@ ER4.h3k27acrep.538.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
 ER4.h3k27acrep.539.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
 ......
 ```
-## Run IDEAS
-##### (1) copy the 'run_pipeline.sh' into the working directory
+
+
+## Run VISION mouse pipeline
+##### (1) copy the 'run_pipeline.sh' in the VISION mouse pipeline into the working directory
 ```
-cp ~/group/software/IDEAS/IDEAS_2018/run_pipeline.sh working_dir/
+cp ~/group/software/vision_mouse/run_pipeline.sh working_dir/
 
 ```
 ##### (2) change the following parameters in the 'run_IDEAS.sh' file:
@@ -75,7 +81,7 @@ overall_lower=2
 time bash $script_dir'overall_pipeline.sh' $script_dir $working_dir $input_dir $input_file_list $overall_upper $overall_lower
 ```
 
-##### (4) use 'run_IDEAS.sh' script to run IDEAS
+##### (3) use 'run_IDEAS.sh' script to run VISION mouse pipeline
 ```
 time bash run_pipeline.sh
 ```
@@ -85,29 +91,18 @@ time bash run_pipeline.sh
 ## Output results for test data
 ### All output files will be saved to the following directories inside the working directory:
 ```
-nbp/
-pknorm_info/
-pknorm_sig/
-ref_info/
-pknorm_ref_sig/
-fisherp/
-list_files/
-pknorm_2_16_sig/
+nbp/: The p-value of each sample based on the NB background model.
+pknorm_info/: The scatterplot and the parameters used in PKnorm normalization for each dataset
+pknorm_sig/: The signal files of the PKnorm normalized data
+ref_info/: The scatterplot and the parameters used in PKnorm normalization for reference datasets across all marks
+pknorm_ref_sig/: The signal files of the PKnorm normalized reference data
+fisherp/: The merged p-value from each sample's NB p-value by the Fisher's method
+list_files/: All of the list files used in the pipeline
+pknorm_2_16_sig/: The signal files of the PKnorm normalized data with the upper & lower bound limitation
 ```
 
-## The heatmap for IDEAS epigenetic state
-<img src="https://github.com/guanjue/IDEAS_2018/blob/master/example_figures/f3_vision_result.png" width="800"/>
-
-##### Figure 3. The epigenetic state inferred by IDEAS. Each row represents one epigenetic state. Each column represents one epigenetic mark. The color density represent the average signal of all genome loci with the corresponding epigenetic state. The dark blue represents high average signal. The white represent the low average signal. 
-
-## The genome browser track (bigbed format) for IDEAS epigenetic state will be saved in the subdirectory (named as Tracks/) in the output directory: 
-```
-track_dir=/storage/home/gzx103/group/software/IDEAS/IDEAS_2018/test_data/run_IDEAS_result/Tracks/
-```
 
 ## References
 
-##### Zhang, Yu, Lin An, Feng Yue, and Ross C. Hardison. "Jointly characterizing epigenetic dynamics across multiple human cell types." Nucleic acids research 44, no. 14 (2016): 6721-6731.
-##### Zhang, Yu, and Ross C. Hardison. "Accurate and reproducible functional maps in 127 human cell types via 2D genome segmentation." Nucleic acids research 45, no. 17 (2017): 9823-9836.
-
+##### PKnorm & vision paper
 
