@@ -1,5 +1,5 @@
 ### install R dependence
-Rscript bin/install_R.R
+Rscript src/install_R.R
 
 ### install python dependence
 pip install --upgrade pip --user
