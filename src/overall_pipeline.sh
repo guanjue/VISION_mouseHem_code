@@ -123,9 +123,6 @@ mv *.ref_frip.txt $working_dir'ref_info/'
 if [ -d $working_dir'fisherp/' ]; then echo $working_dir'fisherp/' exist; else mkdir $working_dir'fisherp/'; fi
 mv *.fisher_p.txt $working_dir'fisherp/'
 mv *.frip_snr.txt $working_dir'fisherp/'
-### list files
-if [ -d $working_dir'list_files/' ]; then echo $working_dir'list_files/' exist; else mkdir $working_dir'list_files/'; fi
-mv *list.txt $working_dir'list_files/'
 
 
 
@@ -138,6 +135,12 @@ done
 ### mv to the output folder
 if [ -d $working_dir'pknorm_'$overall_lower'_'$overall_upper'_sig/' ]; then echo $working_dir'pknorm_'$overall_lower'_'$overall_upper'_sig/' exist; else mkdir $working_dir'pknorm_'$overall_lower'_'$overall_upper'_sig/'; fi
 mv *'.pknorm.'$overall_lower'_'$overall_upper'.txt' $working_dir'pknorm_'$overall_lower'_'$overall_upper'_sig/'
+
+
+
+### list files
+if [ -d $working_dir'list_files/' ]; then echo $working_dir'list_files/' exist; else mkdir $working_dir'list_files/'; fi
+mv *list.txt $working_dir'list_files/'
 
 
 
