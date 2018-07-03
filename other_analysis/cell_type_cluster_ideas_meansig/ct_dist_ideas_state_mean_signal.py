@@ -89,7 +89,7 @@ def main(argv):
 			print 'time python ct_dist_ideas_state_mean_signal.py -i ideas_state_matrix -s ideas_meansig_matrix -o output_name'
 			sys.exit()
 		elif opt=="-i":
-			ideas_state_matrix=int(arg.strip())			
+			ideas_state_matrix=str(arg.strip())			
 		elif opt=="-s":
 			ideas_meansig_matrix=str(arg.strip())					
 		elif opt=="-o":
