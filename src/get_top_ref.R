@@ -27,14 +27,14 @@ for (i in c(1:length(ref_file_list))){
 
 
 print(FRiP_list)
-print(which.max(FRiP_list))
+print(which.max(SNR_list))
 print(SNR_list)
 print(which.max(SNR_list))
 
 
-ref_file = file_list[which.max(FRiP_list)]
-frip_ref = FRiP_list[which.max(FRiP_list)]
-SNR_ref = SNR_list[which.max(FRiP_list)]
+ref_file = file_list[which.max(SNR_list)]
+frip_ref = FRiP_list[which.max(SNR_list)]
+SNR_ref = SNR_list[which.max(SNR_list)]
 
 write.table(c(ref_file, frip_ref, SNR_ref), output_name, sep='\t', quote=F, col.names=F, row.names=F)
 
