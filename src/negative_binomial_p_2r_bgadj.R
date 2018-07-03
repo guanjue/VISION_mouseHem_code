@@ -16,7 +16,7 @@ prob_vec = c()
 ### read data
 sig = read.table(paste(signal_folder, signal_track_file, sep=''), header = F)
 input = read.table(paste(input_folder, input_track_file, sep=''), header = F)
-thesh = 0
+thesh = -1
 
 #####################################################################################################################
 #####################################################################################################################
