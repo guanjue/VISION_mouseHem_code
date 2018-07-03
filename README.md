@@ -67,7 +67,6 @@ ER4.h3k27acrep.539.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
 ##### (1) copy the 'run_pipeline.sh' in the VISION mouse pipeline into the working directory
 ```
 cp ~/group/software/vision_mouse/run_pipeline.sh working_dir/
-
 ```
 ##### (2) change the following parameters in the 'run_IDEAS.sh' file:
 ###### script_dir='absolute path to the IDEAS_2018 dir'
