@@ -76,6 +76,8 @@ cp ~/group/software/vision_mouse/run_pipeline.sh working_dir/
 ###### input_dir='the input file's folder'
 ###### overall_upper='the upper limit of the output file'
 ###### overall_lower='the lower limit of the output file'
+###### select_method='method used to select reference dataset (frip/snr)'
+###### user_given_global_ref='user given global reference dataset (if empty, pipeline will user the dataset with the highest frip/snr score dataset)'
 
 ```
 >>> head -100 run_IDEAS.sh 
@@ -86,6 +88,8 @@ input_dir=/storage/home/gzx103/scratch/vision/test_pipeline/input_5end_rc/
 input_file_list=info_table_all.rc2nbp.txt
 overall_upper=16
 overall_lower=2
+select_method=frip
+user_given_global_ref=ERY_fl.h3k4me3rep.fisher_p.txt
 
 
 time bash $script_dir'overall_pipeline.sh' $script_dir $working_dir $input_dir $input_file_list $overall_upper $overall_lower

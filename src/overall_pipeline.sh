@@ -5,7 +5,8 @@ input_dir=$3
 input_file_list=$4
 overall_upper=$5
 overall_lower=$6
-
+select_method=$7
+user_given_global_ref=$8
 
 
 ###### covert reads count to NB p-value
@@ -43,10 +44,10 @@ for mk in $(cat mark_list.txt)
 do
 	echo $mk
 	ls *$mk*.frip_snr.txt > $mk'.file_list.txt'
-	if time Rscript $script_dir'get_mk_ref.R' $mk'.file_list.txt' $mk'.ref_frip.txt'; then echo 'select reference dataset for pknorm'; else echo 'ERROR: select reference dataset for pknorm' && exit 1; fi
+	if time Rscript $script_dir'get_mk_ref.R' $mk'.file_list.txt' $select_method $mk'.ref_frip.txt'; then echo 'select reference dataset for pknorm'; else echo 'ERROR: select reference dataset for pknorm' && exit 1; fi
 done
 ### select top reference dataset for cross mark pknorm
-if time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $working_dir cross_mark_ref_list.txt; then echo 'select top reference dataset for cross mark pknorm DONE'; else echo 'ERROR: select top reference dataset for cross mark pknorm' && exit 1; fi
+if time Rscript $script_dir'get_top_ref.R' '.ref_frip.txt' $select_method $working_dir cross_mark_ref_list.txt $user_given_global_ref; then echo 'select top reference dataset for cross mark pknorm DONE'; else echo 'ERROR: select top reference dataset for cross mark pknorm' && exit 1; fi
 
 
 
