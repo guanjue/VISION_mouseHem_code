@@ -50,7 +50,7 @@ def ct_dist_ideas_state_mean_signal(ideas_state_matrix, ideas_meansig_matrix, ou
 				print(str(i)+'_'+str(j))
 				ct1_ideas = ideas_state_data[:,i]
 				ct2_ideas = ideas_state_data[:,j]
-				Euclidean_dist = np.sum(ct1_ideas == ct2_ideas)
+				Euclidean_dist = np.sum(ct1_ideas != ct2_ideas)
 				Euclidean_dist_matrix[i,j] = Euclidean_dist
 				Euclidean_dist_matrix[j,i] = Euclidean_dist
 
