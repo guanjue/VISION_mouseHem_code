@@ -10,7 +10,8 @@ def ct_dist_ideas_state_mean_signal(ideas_state_matrix, ideas_meansig_matrix, ou
 				r1.write(str(records[i])+'\t')
 			r1.write(str(records[len(records)-1])+'\n')
 		r1.close()
-
+	### random seed
+	np.random.seed(2018)
 	############
 	###### read whole genome IDEAS state in each cell type
 	ideas_state_data0 = open(ideas_state_matrix, 'r')
@@ -18,11 +19,17 @@ def ct_dist_ideas_state_mean_signal(ideas_state_matrix, ideas_meansig_matrix, ou
 	print(ct_name)
 	###### get IDEAS state matrix
 	ideas_state_data = []
+	readline_i = 0
 	for bin_state_vector in ideas_state_data0:
+		readline_i = readline_i+1
+		if readline_i%10000 == 0:
+			print(readline_i)
 		bin_state_vector_tmp = bin_state_vector.split(' ')[4:-1]
 		ideas_state_data.append(bin_state_vector_tmp)
 
 	ideas_state_data = np.array(ideas_state_data)
+	idx = np.random.randint(ideas_state_data.shape[1], size=100000)
+	ideas_state_data = ideas_state_data[idx,:]
 	ideas_state_data0.close()
 
 
@@ -43,6 +50,9 @@ def ct_dist_ideas_state_mean_signal(ideas_state_matrix, ideas_meansig_matrix, ou
 
 	ct_num = ideas_state_data.shape[1]
 	Euclidean_dist_matrix = np.zeros((ct_num, ct_num))
+	Euclidean_dist_matrix_dict = {}
+	for mark_i in range(0,8):
+		Euclidean_dist_matrix_dict[mark_i] = np.zeros((ct_num, ct_num))
 
 	for i in range(0,ct_num):
 		for j in range(0,ct_num):
@@ -58,16 +68,31 @@ def ct_dist_ideas_state_mean_signal(ideas_state_matrix, ideas_meansig_matrix, ou
 				############
 				###### calculate mv Euclidean distance
 				Euclidean_dist_square = 0.0
+				Euclidean_dist_square_dict = {}
+				for mark_i in range(0,8):
+					Euclidean_dist_square_dict[mark_i] = 0.0
+
 				for sig1, sig2 in zip(ct1_ideas_signal_matrix, ct2_ideas_signal_matrix):
 					Euclidean_dist_square = Euclidean_dist_square + np.sum(np.square(sig1-sig2))
+					for mark_i in range(0,8):
+						Euclidean_dist_square_dict[mark_i] = Euclidean_dist_square_dict[mark_i] + np.sum(np.square(sig1-sig2))[mark_i]
+
 				Euclidean_dist = np.sqrt(Euclidean_dist_square)
 				Euclidean_dist_matrix[i,j] = Euclidean_dist
 				Euclidean_dist_matrix[j,i] = Euclidean_dist
+				for mark_i in range(0,8):
+					Euclidean_dist_mark_i = np.sqrt(Euclidean_dist_square_dict[mark_i])
+					Euclidean_dist_matrix_dict[mark_i] = Euclidean_dist_mark_i
+
 
 	Euclidean_dist_matrix = np.array(Euclidean_dist_matrix)
-
-
 	write2d_array(Euclidean_dist_matrix, output_name)
+
+	for mark_i in range(0,8):
+		Euclidean_dist_matrix_mark_i = np.array(Euclidean_dist_matrix_dict[mark_i])
+		write2d_array(Euclidean_dist_matrix_mark_i, mark_list[i] + '_' + output_name)
+
+
 
 
 

@@ -5,8 +5,9 @@ names = read.table('signal_list.txt', header=F)[,2]
 
 colnames(signal_matrix) = names
 
+cor_method = 'spearman'
 ct_dist = dist(t(signal_matrix))
-ct_cor = cor(signal_matrix, method='pearson')
+ct_cor = cor(signal_matrix, method=cor_method)
 
 hc = hclust(ct_dist, method = "average")
 
@@ -14,9 +15,21 @@ library(pheatmap)
 my_colorbar=colorRampPalette(c('white', 'red'))(n = 128)
 col_breaks = c(seq(0, 2000,length=33))
 
-cor_matrix = cor(signal_matrix, method = 'pearson')
+cor_matrix = cor(signal_matrix, method = cor_method)
+cr=round(cor_matrix, digits=2)
+library("gplots")
+library("RColorBrewer")
+my_palette <- c("#1000FFFF","#0047FFFF","#00C8FFFF","#00FFE0FF","#00FF89FF","#00FF33FF","#99FF00FF","#AFFF00FF","#FFD800FF","#FFB800FF","#FFAD00FF","#FF8100FF","#FF5600FF","#FF2B00FF","#FF0000FF")
+breaks = c(seq(-.1,1,length=16))
+
+dist.pear <- function(x) as.dist(1-x)
 pdf('hc_heatmap.pdf')
-pheatmap(cor_matrix, color=my_colorbar, cluster_cols = TRUE,cluster_rows=TRUE,annotation_names_row=TRUE,annotation_names_col=TRUE,show_rownames=TRUE,show_colnames=TRUE,clustering_method = 'complete')
+#pheatmap(cor_matrix, color=my_colorbar, cluster_cols = TRUE,cluster_rows=TRUE,annotation_names_row=TRUE,annotation_names_col=TRUE,show_rownames=TRUE,show_colnames=TRUE,clustering_method = 'complete')
+heatmap.2(cor_matrix, dendrogram="row", col=my_palette, breaks=breaks, trace="none", cellnote=cr, notecol="black", revC=TRUE, notecex=.5, symm=TRUE, distfun=dist.pear, symkey=FALSE, margins = c(8,8))
+dev.off()
+
+pdf('hc_tree.pdf')
+plot(hclust(as.dist(1-cor_matrix), method = "ward.D", members = NULL))
 dev.off()
 
 

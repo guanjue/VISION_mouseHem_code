@@ -11,3 +11,15 @@ col_breaks = c(seq(0, 2000,length=33))
 pdf('IDEAS_state_meansignal_Euclidean_dist_matrix.pdf')
 pheatmap(euclidean_dist, color=my_colorbar, cluster_cols = TRUE,cluster_rows=TRUE,annotation_names_row=TRUE,annotation_names_col=TRUE,show_rownames=TRUE,show_colnames=TRUE,clustering_method = 'complete')
 dev.off()
+
+
+ed=round(euclidean_dist, digits=2)
+library("gplots")
+library("RColorBrewer")
+
+dist.pear <- function(x) as.dist(x)
+pdf('hc_heatmap.pdf')
+#pheatmap(cor_matrix, color=my_colorbar, cluster_cols = TRUE,cluster_rows=TRUE,annotation_names_row=TRUE,annotation_names_col=TRUE,show_rownames=TRUE,show_colnames=TRUE,clustering_method = 'complete')
+heatmap.2(euclidean_dist, dendrogram="row", col=my_colorbar, trace="none", cellnote="none", notecol="black", revC=TRUE, notecex=.5, symm=TRUE, distfun=dist.pear, symkey=FALSE, margins = c(8,8))
+dev.off()
+
