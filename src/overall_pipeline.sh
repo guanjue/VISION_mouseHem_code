@@ -15,7 +15,7 @@ do
 	sig1=$(echo "$LINE" | awk '{print $1}')
 	sig2=$(echo "$LINE" | awk '{print $2}')
 	echo $sig1 $sig2
-	if time Rscript $script_dir'negative_binomial_p_2r_bgadj.R' $sig1 $input_dir $sig2 $input_dir $sig1; then echo 'covert reads count to NB p-value DONE'; else echo 'ERROR: covert reads count to NB p-value' && exit 1; fi
+	if time Rscript $script_dir'negative_binomial_p_2r_bgadj_bayes.R' $sig1 $input_dir $sig2 $input_dir $sig1; then echo 'covert reads count to NB p-value DONE'; else echo 'ERROR: covert reads count to NB p-value' && exit 1; fi
 done < $input_file_list
 
 

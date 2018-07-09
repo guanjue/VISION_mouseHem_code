@@ -28,11 +28,11 @@ def ct_dist_ideas_state_mean_signal(ideas_state_matrix, ideas_meansig_matrix, ou
 		ideas_state_data.append(bin_state_vector_tmp)
 
 	ideas_state_data = np.array(ideas_state_data)
-	idx = np.random.randint(ideas_state_data.shape[1], size=100000)
+	idx = np.random.randint(ideas_state_data.shape[0], size=100000) 
 	ideas_state_data = ideas_state_data[idx,:]
 	ideas_state_data0.close()
 
-
+	print(np.sum(ideas_state_data[:,0]!=ideas_state_data[:,1]))
 	############
 	###### read IDEAS state mean signal
 	ideas_state_meansig0 = open(ideas_meansig_matrix, 'r')
@@ -75,14 +75,17 @@ def ct_dist_ideas_state_mean_signal(ideas_state_matrix, ideas_meansig_matrix, ou
 				for sig1, sig2 in zip(ct1_ideas_signal_matrix, ct2_ideas_signal_matrix):
 					Euclidean_dist_square = Euclidean_dist_square + np.sum(np.square(sig1-sig2))
 					for mark_i in range(0,8):
-						Euclidean_dist_square_dict[mark_i] = Euclidean_dist_square_dict[mark_i] + np.sum(np.square(sig1-sig2))[mark_i]
+						Euclidean_dist_square_dict[mark_i] = Euclidean_dist_square_dict[mark_i] + (np.square(sig1-sig2)[mark_i])
 
 				Euclidean_dist = np.sqrt(Euclidean_dist_square)
+				print(Euclidean_dist)
 				Euclidean_dist_matrix[i,j] = Euclidean_dist
 				Euclidean_dist_matrix[j,i] = Euclidean_dist
 				for mark_i in range(0,8):
 					Euclidean_dist_mark_i = np.sqrt(Euclidean_dist_square_dict[mark_i])
-					Euclidean_dist_matrix_dict[mark_i] = Euclidean_dist_mark_i
+					print(Euclidean_dist_mark_i)
+					Euclidean_dist_matrix_dict[mark_i][i,j] = Euclidean_dist_mark_i
+					Euclidean_dist_matrix_dict[mark_i][j,i] = Euclidean_dist_mark_i
 
 
 	Euclidean_dist_matrix = np.array(Euclidean_dist_matrix)
