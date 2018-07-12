@@ -47,21 +47,28 @@ colnames(scores)[cols+1]="cell"
 
 my_palette = c("#8B1C62","#ff3030","#8b7355","#ee7600","#cd5555","#FF0000","#ee2c2c","#ee6363","#008b8b","#ff7f00","#228b22","#cd6600","#8b5a2b","#1874cd","#4f94cd","#8b008b","#7a378b","#68228b")
 
-pdf('pca_pc1_pc2.pdf')
+pdf('pca_pc1_pc2.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC2, y=PC1))+geom_point(aes(color=cell), size=6)+geom_point(aes(color=cell), size=6)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+ggplot(scores, aes(x=PC2, y=PC1))+geom_point(aes(color=cell), size=6, pch=20)+geom_point(aes(color=cell), size=6, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
 dev.off()
 
-pdf('pca_pc1_pc3.pdf')
+pdf('pca_pc1_pc3.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC3, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=6)+geom_point(aes(color=cell), size=6)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+ggplot(scores, aes(x=PC3, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=6, pch=20)+geom_point(aes(color=cell), size=6)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
 dev.off()
 
 
-pdf('pca_pc2_pc3.pdf')
+pdf('pca_pc2_pc3.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC2, y=PC3), col=my_palette)+geom_point(aes(color=cell), size=6)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+ggplot(scores, aes(x=PC2, y=PC3), col=my_palette)+geom_point(aes(color=cell), size=6, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
 dev.off()
+
+
+pdf('pca_pc1.pdf', useDingbats=FALSE)
+cell = colnames(signal_matrix)
+ggplot(scores, aes(x=0, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=6, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+dev.off()
+
 
 
 eigs = pca$sdev^2
