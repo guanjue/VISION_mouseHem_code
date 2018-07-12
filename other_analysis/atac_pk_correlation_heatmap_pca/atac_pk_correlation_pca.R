@@ -64,7 +64,7 @@ ggplot(scores, aes(x=PC2, y=PC3), col=my_palette)+geom_point(aes(color=cell), si
 dev.off()
 
 
-pdf('pca_pc1.pdf', useDingbats=FALSE)
+pdf('pca_pc1.pdf', useDingbats=FALSE, width = 3, height = 7)
 cell = colnames(signal_matrix)
 ggplot(scores, aes(x=0, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=6, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
 dev.off()
