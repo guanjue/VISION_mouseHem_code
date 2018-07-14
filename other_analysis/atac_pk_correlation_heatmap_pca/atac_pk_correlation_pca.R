@@ -28,15 +28,6 @@ pdf('hc_heatmap.pdf')
 heatmap.2(cor_matrix, dendrogram="row", col=my_palette, breaks=breaks, trace="none", cellnote=cr, notecol="black", revC=TRUE, notecex=.5, symm=TRUE, distfun=dist.pear, symkey=FALSE, margins = c(8,8))
 dev.off()
 
-pdf('hc_tree.pdf')
-plot(hclust(as.dist(1-cor_matrix), method = "ward.D", members = NULL))
-dev.off()
-
-
-
-###### PCA analysis
-library(ggplot2)
-
 pca=prcomp(t(signal_matrix), center = FALSE, scale. = FALSE)
 scores=data.frame(pca$x)
 
@@ -45,28 +36,40 @@ cells=rownames(scores)#gsub("_.*", "", rownames(scores))
 scores=data.frame(scores,cells)
 colnames(scores)[cols+1]="cell"
 
+pdf('hc_tree.pdf')
+plot(hclust(as.dist(1-cor_matrix), method = "ward.D", members = NULL))
+dev.off()
+
+
+
+###### PCA analysis
+library(ggplot2)
+### for cell type
 my_palette = c("#8B1C62","#ff3030","#8b7355","#ee7600","#cd5555","#FF0000","#ee2c2c","#ee6363","#008b8b","#ff7f00","#228b22","#cd6600","#8b5a2b","#1874cd","#4f94cd","#8b008b","#7a378b","#68228b")
+### for sample
+my_palette = c('#8B1C62', '#ff3030', '#ff3030', '#8b7355', '#8b7355', '#ee7600', '#ee7600', '#cd5555', '#cd5555', '#FF0000', '#FF0000', '#ee2c2c', '#ee6363', '#ee6363', '#008b8b', '#008b8b', '#ff7f00', '#ff7f00', '#228b22', '#228b22', '#cd6600', '#cd6600', '#8b5a2b', '#8b5a2b', '#1874cd', '#1874cd', '#4f94cd', '#4f94cd', '#8b008b', '#7a378b', '#68228b')
+
 
 pdf('pca_pc1_pc2.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC2, y=PC1))+geom_point(aes(color=cell), size=6, pch=20)+geom_point(aes(color=cell), size=6, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+ggplot(scores, aes(x=PC2, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
 dev.off()
 
 pdf('pca_pc1_pc3.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC3, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=6, pch=20)+geom_point(aes(color=cell), size=6)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+ggplot(scores, aes(x=PC3, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
 dev.off()
 
 
 pdf('pca_pc2_pc3.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC2, y=PC3), col=my_palette)+geom_point(aes(color=cell), size=6, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+ggplot(scores, aes(x=PC2, y=PC3), col=my_palette)+geom_point(aes(color=cell), size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=2)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
 dev.off()
 
 
 pdf('pca_pc1.pdf', useDingbats=FALSE, width = 3, height = 7)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=0, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=6, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette)
+ggplot(scores, aes(x=0, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=2)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
 dev.off()
 
 
