@@ -143,6 +143,7 @@ print(input_0_var)
 
 ### get negative binomial p-value 1st round
 nb_pval = apply(sig, MARGIN=1, function(x) pnbinom(x[1], sig_0_size, sig_0_prob, lower.tail=FALSE) )
+nb_pval_fdr = p.adjust(nb_pval, 'fdr')
 ### get -log10(p-value)
 print('get -log10(p-value)')
 print(min(nb_pval[nb_pval!=0]))
@@ -159,9 +160,9 @@ print(summary(nb_pval))
 thesh = 0
 
 ### get sig bg regions
-sig_bg = sig[nb_pval>=(0.05/dim(sig)[1]),]
-print('sum(nb_pval>=0.001): ')
-print(sum(nb_pval>=(0.05/dim(sig)[1])))
+sig_bg = sig[nb_pval_fdr>=0.05,]
+print('sum(nb_pval_fdr>=0.05): ')
+print(sum(nb_pval_fdr>=0.05))
 sig_bg_non0 = sig_bg[sig_bg>thesh]
 sig_bg_mean = mean(sig_bg_non0)
 sig_bg_moment2 = mean(sig_bg_non0^2)
