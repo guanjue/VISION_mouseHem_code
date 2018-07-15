@@ -159,9 +159,9 @@ print(summary(nb_pval))
 thesh = 0
 
 ### get sig bg regions
-sig_bg = sig[nb_pval>=0.001,]
+sig_bg = sig[nb_pval>=(0.05/dim(sig)[1]),]
 print('sum(nb_pval>=0.001): ')
-print(sum(nb_pval>=0.001))
+print(sum(nb_pval>=(0.05/dim(sig)[1])))
 sig_bg_non0 = sig_bg[sig_bg>thesh]
 sig_bg_mean = mean(sig_bg_non0)
 sig_bg_moment2 = mean(sig_bg_non0^2)
