@@ -125,8 +125,8 @@ if (sig_0_prob>=0.9){
 	sig_0_prob = 0.9
 }
 
-p0 = probT_sizeT[3]
-sig_bg_size = probT_sizeT[2]
+p0 = sig_0_probT_sizeT[3]
+sig_bg_size = sig_0_probT_sizeT[2]
 #sig_bg_size = sig_bg_mean^2 * (1-p0) / (sig_bg_mean_sig2 - sig_bg_mean^2 * (1-p0) - sig_bg_mean)
 #sig_0_size = sig_0_mean * sig_0_prob / (1-sig_0_prob)
 
