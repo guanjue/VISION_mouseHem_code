@@ -148,7 +148,7 @@ print(input_0_var)
 
 ### get negative binomial p-value 1st round
 sig_input = cbind(sig, input)
-nb_pval = apply(sig_input, MARGIN=1, function(x) pnbinom(x[1], sig_bg_size * (x[2]+1)/(input_0_mean+1), sig_bg_prob, lower.tail=FALSE) )
+nb_pval = apply(sig_input, MARGIN=1, function(x) pnbinom(x[1], sig_0_size * (x[2]+1)/(input_0_mean+1), sig_0_prob, lower.tail=FALSE) )
 nb_pval[nb_pval<=1e-324] = 1e-324
 neglog10_nb_pval = -log10(nb_pval)
 
