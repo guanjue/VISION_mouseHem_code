@@ -97,17 +97,13 @@ input = read.table(paste(input_folder, input_track_file, sep=''), header = F)
 #####################################################################################################################
 #####################################################################################################################
 ### get sig bg regions no bgs
-thresh = 0
 sig_0 = sig[,1]
-sig_0 = sig_0[sig_0>thresh]
 sig_0_mean = mean(sig_0)
 sig_0_moment2 = mean(sig_0^2)
 sig_0_var = var(sig_0)
 
 
-sig_0_probT_sizeT = get_true_NB_prob_size(sig_0)
-
-
+#sig_0_probT_sizeT = get_true_NB_prob_size(sig_0)
 
 print(paste('check signal track overdispersion in background regions, var/mean=', toString(round(sig_0_var/sig_0_mean, digits=3)) ))
 print(sig_0_mean)
@@ -115,8 +111,8 @@ print(sig_0_var)
 print(length(sig_0))
 
 ### get negative binomial parameters from signal track bg regions
-sig_0_prob = sig_0_probT_sizeT[1]
-#sig_0_prob = sig_0_mean / sig_0_var
+#sig_0_prob = sig_0_probT_sizeT[1]
+sig_0_prob = sig_0_mean / sig_0_var
 if (sig_0_prob<0.1){
 	sig_0_prob = 0.1
 }
@@ -125,10 +121,9 @@ if (sig_0_prob>=0.9){
 	sig_0_prob = 0.9
 }
 
-p0 = sig_0_probT_sizeT[3]
-sig_0_size = sig_0_probT_sizeT[2]
+#p0 = probT_sizeT[3]
 #sig_bg_size = sig_bg_mean^2 * (1-p0) / (sig_bg_mean_sig2 - sig_bg_mean^2 * (1-p0) - sig_bg_mean)
-#sig_0_size = sig_0_mean * sig_0_prob / (1-sig_0_prob)
+sig_0_size = sig_0_mean * sig_0_prob / (1-sig_0_prob)
 
 
 ### get input bg regions
@@ -147,16 +142,7 @@ print(input_0_mean)
 print(input_0_var)
 
 ### get negative binomial p-value 1st round
-sig_input = cbind(sig, input)
-nb_pval = apply(sig_input, MARGIN=1, function(x) pnbinom(x[1], sig_0_size * (x[2]+1)/(input_0_mean+1), sig_0_prob, lower.tail=FALSE) )
-nb_pval[nb_pval<=1e-324] = 1e-324
-neglog10_nb_pval = -log10(nb_pval)
-
-### write output
-write.table(neglog10_nb_pval, paste(output_name, '.nbp_1r_bgadj.txt', sep=''), quote=FALSE, col.names=FALSE, row.names=FALSE, sep='\t')
-
-
-#nb_pval = apply(sig_input, MARGIN=1, function(x) pnbinom(x[1], sig_0_size, sig_0_prob, lower.tail=FALSE) )
+nb_pval = apply(sig, MARGIN=1, function(x) pnbinom(x[1], sig_0_size, sig_0_prob, lower.tail=FALSE) )
 nb_pval_fdr = p.adjust(nb_pval, 'fdr')
 ### get -log10(p-value)
 print('get -log10(p-value)')
@@ -174,9 +160,9 @@ print(summary(nb_pval))
 thesh = 0
 
 ### get sig bg regions
-sig_bg = sig[nb_pval_fdr>=0.05,]
-print('sum(nb_pval_fdr>=0.05): ')
-print(sum(nb_pval_fdr>=0.05))
+sig_bg = sig[nb_pval_fdr>=0.01,]
+print('sum(nb_pval>=0.001): ')
+print(sum(nb_pval_fdr>=0.01))
 sig_bg_non0 = sig_bg[sig_bg>thesh]
 sig_bg_mean = mean(sig_bg_non0)
 sig_bg_moment2 = mean(sig_bg_non0^2)
