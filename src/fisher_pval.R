@@ -14,12 +14,13 @@ print(file_list)
 data_matrix = NULL
 for (file in file_list){
 	d = read.table(paste(input_folder, file, sep=''), header = F)
-	d[d>324] = 324
+	d[d>308] = 308
 	d[d<0] = 0
 	data_matrix = cbind(data_matrix, d[,])
 }
 ### get fisher method combined p-value
 get_fisher_p = function(x){
+	print(x)
 	if (length(x)!=1){
 		x_p = 10^(-x)
 		fp = sumlog(x_p)$p
