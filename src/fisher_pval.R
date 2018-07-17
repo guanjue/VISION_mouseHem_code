@@ -14,6 +14,8 @@ print(file_list)
 data_matrix = NULL
 for (file in file_list){
 	d = read.table(paste(input_folder, file, sep=''), header = F)
+	d[d>324] = 324
+	d[d<0] = 0
 	data_matrix = cbind(data_matrix, d[,])
 }
 ### get fisher method combined p-value
