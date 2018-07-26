@@ -1,3 +1,4 @@
+set.seed(2018)
 #signal_matrix = read.table('snapshot20_reproduce_2_16lim/atac_20cell.signal.matrix.no0.txt', header=F)[,c(-1,-2,-3,-4)]
 signal_matrix = read.table('atac_20cell.signal.matrix.no0.txt', header=F)[,c(-1,-2,-3,-4)]
 
@@ -25,11 +26,35 @@ breaks = c(seq(-.1,1,length=16))
 dist.pear <- function(x) as.dist(1-x)
 pdf('hc_heatmap.pdf')
 #pheatmap(cor_matrix, color=my_colorbar, cluster_cols = TRUE,cluster_rows=TRUE,annotation_names_row=TRUE,annotation_names_col=TRUE,show_rownames=TRUE,show_colnames=TRUE,clustering_method = 'complete')
-heatmap.2(cor_matrix, dendrogram="row", col=my_palette, breaks=breaks, trace="none", cellnote=cr, notecol="black", revC=TRUE, notecex=.5, symm=TRUE, distfun=dist.pear, symkey=FALSE, margins = c(8,8))
+heatmap.2(cor_matrix, dendrogram="row", col=my_palette, breaks=breaks, trace="none", notecol="black", revC=TRUE, notecex=.5, symm=TRUE, distfun=dist.pear, symkey=FALSE, margins = c(8,8))
 dev.off()
 
 pca=prcomp(t(signal_matrix), center = FALSE, scale. = FALSE)
 scores=data.frame(pca$x)
+pk_loading = pca$rotation
+
+
+contribution_pc1 = apply(signal_matrix, 1, function(x) cor(x, scores$PC1))
+contribution_pc2 = apply(signal_matrix, 1, function(x) cor(x, scores$PC2))
+contribution_pc3 = apply(signal_matrix, 1, function(x) cor(x, scores$PC3))
+
+pdf('pca_cor.pdf', width=15, height=5)
+par(mfrow=c(1,3))
+hist(contribution_pc1, breaks=100, xlim=c(-1,1))
+box()
+hist(contribution_pc2, breaks=100, xlim=c(-1,1))
+box()
+hist(contribution_pc3, breaks=100, xlim=c(-1,1))
+box()
+dev.off()
+
+library(pheatmap)
+pk_loading_sample = pk_loading[sample(dim(pk_loading)[1], 10000),c(1,2,3)]
+pdf('pca_loading.pdf', width=10, height=15)
+pheatmap(pk_loading_sample,cluster_cols = FALSE)
+dev.off()
+
+
 
 cols=ncol(scores)
 cells=rownames(scores)#gsub("_.*", "", rownames(scores))
@@ -52,18 +77,18 @@ my_palette = c('#8B1C62', '#ff3030', '#ff3030', '#8b7355', '#8b7355', '#ee7600',
 
 pdf('pca_pc1_pc2.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC2, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
+ggplot(scores, aes(x=PC2, y=PC1))+geom_point(colour=my_palette, size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
 dev.off()
 
 pdf('pca_pc1_pc3.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC3, y=PC1), col=my_palette)+geom_point(aes(color=cell), size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
+ggplot(scores, aes(x=PC3, y=PC1))+geom_point(colour=my_palette, size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=3)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
 dev.off()
 
 
 pdf('pca_pc2_pc3.pdf', useDingbats=FALSE)
 cell = colnames(signal_matrix)
-ggplot(scores, aes(x=PC2, y=PC3), col=my_palette)+geom_point(aes(color=cell), size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=2)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
+ggplot(scores, aes(x=PC2, y=PC3))+geom_point(colour=my_palette, size=4, pch=20)+geom_text(aes(label=rownames(scores)), size=2)+scale_colour_manual(values = my_palette) + theme(legend.position="none")
 dev.off()
 
 

@@ -1,0 +1,15 @@
+0_0_0_S.01.bed
+0_0_F_0.01.bed
+0_0_F_S.01.bed
+0_A_0_0.01.bed
+0_A_0_S.01.bed
+0_A_F_0.01.bed
+0_A_F_S.01.bed
+V_0_0_0.01.bed
+V_0_0_S.01.bed
+V_0_F_0.01.bed
+V_0_F_S.01.bed
+V_A_0_0.01.bed
+V_A_0_S.01.bed
+V_A_F_0.01.bed
+V_A_F_S.01.bed
