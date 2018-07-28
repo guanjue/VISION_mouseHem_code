@@ -20,7 +20,7 @@ for (file in file_list){
 }
 ### get fisher method combined p-value
 get_fisher_p = function(x){
-	print(x)
+	#print(x)
 	if (length(x)!=1){
 		x_p = 10^(-x)
 		fp = sumlog(x_p)$p
