@@ -274,6 +274,7 @@ rownames(signal_matrix_color_reorder) = ct_name_vec_reorder
 heatmap_save_type = pdf
 color_heatmap(signal_matrix_color_reorder, output_filename, heatmap_save_type, heatmap_boarder_col)
 
-
-
-
+hc = hclust(dist_cor)
+pdf(paste(output_filename,'.tree.pdf', sep=''))
+plot(hc, hang=-1)
+dev.off()
