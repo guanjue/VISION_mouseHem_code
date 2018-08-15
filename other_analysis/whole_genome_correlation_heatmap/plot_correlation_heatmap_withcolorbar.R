@@ -264,7 +264,7 @@ color_bar_ct_reorder = color_bar_ct[new_ct_order]
 signal_matrix_color_reorder = cbind(signal_matrix_color_reorder, color_bar_mark_reorder, color_bar_ct_reorder)
 
 ###### add colnames row names
-colnames(signal_matrix_color_reorder) = c(data_name[new_ct_order], 'mark', 'cell-type')
+colnames(signal_matrix_color_reorder) = c(ct_name_vec[new_ct_order], 'mark', 'cell-type')
 ct_name_vec_reorder = ct_name_vec[new_ct_order]
 rownames(signal_matrix_color_reorder) = ct_name_vec_reorder
 
