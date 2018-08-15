@@ -188,7 +188,7 @@ for (i in c(1: dim(data)[1])){
         ##### get color bar based on mark
         color_bar_mark = rbind(color_bar_mark, get_color_bar_mark(mk_tmp))
         color_bar_ct = rbind(color_bar_ct, get_color_bar_ct(ct_tmp_modified))
-        ct_name_vec = rbind(ct_name_vec, ct_tmp_modified)
+        ct_name_vec = rbind(ct_name_vec, paste(ct_tmp_modified, mk_tmp, sep='_'))
 }
 
 
