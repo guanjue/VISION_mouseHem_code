@@ -210,7 +210,7 @@ new_ct_order = hclust_cor$order
 filter_range = max(cor_matrix) - min(cor_matrix)
 ### subtract min(filter matrix) (Entropy smaller -> less white filter)
 filter_percent = (cor_matrix - min(cor_matrix) ) / filter_range
-
+filter_percent_label = (cbind(seq(min(cor_matrix), max(cor_matrix), length.out=100), seq(min(cor_matrix), max(cor_matrix), length.out=100)) - min(cor_matrix) ) / filter_range
 
 ####################################################
 ###### convert signal matrix to color matrix (With filter)
@@ -224,6 +224,7 @@ rh = signal_high_color_rgb[1]/255
 rl = signal_low_color_rgb[1]/255
 ### add filter: od_color * filter + bg_color * (1 - filter)
 r = rh * filter_percent + rl * (1-filter_percent)
+r_label = rh * filter_percent_label + rl * (1-filter_percent_label)
 ### set upper & lower limit for r
 r[r>1] = 1
 r[r<0] = 0
@@ -233,6 +234,7 @@ gh = signal_high_color_rgb[2]/255
 gl = signal_low_color_rgb[2]/255
 ### add filter: od_color * (1-filter) + bg_color * filter
 g = gh * filter_percent + gl * (1-filter_percent)
+g_label = gh * filter_percent_label + gl * (1-filter_percent_label)
 ### set upper & lower limit for g
 g[g>1] = 1
 g[g<0] = 0
@@ -242,10 +244,12 @@ bh = signal_high_color_rgb[3]/255
 bl = signal_low_color_rgb[3]/255
 ### add filter: od_color * (1-filter) + bg_color * filter
 b = bh * filter_percent + bl * (1-filter_percent)
+b_label = bh * filter_percent_label + bl * (1-filter_percent_label)
 ### set upper & lower limit for b
 b[b>1] = 1
 b[b<0] = 0
 ###### creat rgb color matrix
+### for heatmap
 signal_matrix_color = NULL
 for (i in seq(1,dim(r)[2])){
 	#print(i)
@@ -253,6 +257,14 @@ for (i in seq(1,dim(r)[2])){
 	cor_col_tmp = rgb( r[,i], g[,i], b[,i] )
 	### cbind column to a rgb matrix
 	signal_matrix_color = cbind(signal_matrix_color, cor_col_tmp)
+}
+### for color key
+signal_matrix_color_key = NULL
+for (i in seq(1,dim(r_label)[2])){
+	### convert each r,g,b vector to a rgb matrix column
+	cor_col_tmp = rgb( r_label[,i], g_label[,i], b_label[,i] )
+	### cbind column to a rgb matrix
+	signal_matrix_color_key = cbind(signal_matrix_color_key, cor_col_tmp)
 }
 
 ###### reorder correlation heatmap by the correlation-dist  
@@ -268,11 +280,14 @@ colnames(signal_matrix_color_reorder) = c(ct_name_vec[new_ct_order], 'mark', 'ce
 ct_name_vec_reorder = ct_name_vec[new_ct_order]
 rownames(signal_matrix_color_reorder) = ct_name_vec_reorder
 
+rownames(signal_matrix_color_key) = signal_matrix_color_key[,1]
 
 ####################################################
 ###### plot heatmap
 heatmap_save_type = pdf
 color_heatmap(signal_matrix_color_reorder, output_filename, heatmap_save_type, heatmap_boarder_col)
+
+color_heatmap(signal_matrix_color_key, paste(output_filename,'.colorkey.pdf', sep=''), heatmap_save_type, heatmap_boarder_col)
 
 hc = hclust(dist_cor)
 pdf(paste(output_filename,'.tree.pdf', sep=''))
