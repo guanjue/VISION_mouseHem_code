@@ -33,24 +33,6 @@ pca=prcomp(t(signal_matrix), center = FALSE, scale. = FALSE)
 scores=data.frame(pca$x)
 pk_loading = pca$rotation
 
-scores_pc1 = as.matrix(-scores[,1])
-rownames(scores_pc1) = rownames(scores)
-colnames(scores_pc1) = 'PC1'
-write.table(scores_pc1, 'negative_pc1_score.txt', quote=FALSE, sep='\t', col.names=FALSE)
-scores_pc1_rep1 = as.matrix(-scores[c(2, 4, 6, 8, 10, 13, 15, 17, 19, 21, 23, 25, 27),1])
-rownames(scores_pc1_rep1) = rownames(scores)[c(2, 4, 6, 8, 10, 13, 15, 17, 19, 21, 23, 25, 27)]
-colnames(scores_pc1_rep1) = 'PC1'
-write.table(scores_pc1_rep1, 'negative_pc1_score.rep1.txt', quote=FALSE, sep='\t', col.names=FALSE)
-scores_pc1_rep2 = as.matrix(-scores[c(3, 5, 7, 9, 11, 14, 16, 18, 20, 22, 24, 26, 28),1])
-rownames(scores_pc1_rep2) = rownames(scores)[c(3, 5, 7, 9, 11, 14, 16, 18, 20, 22, 24, 26, 28)]
-colnames(scores_pc1_rep2) = 'PC1'
-write.table(scores_pc1_rep2, 'negative_pc1_score.rep2.txt', quote=FALSE, sep='\t', col.names=FALSE)
-scores_pc1_0rep = as.matrix(-scores[c(1,12,29,30,31),1])
-rownames(scores_pc1_0rep) = rownames(scores)[c(1,12,29,30,31)]
-colnames(scores_pc1_0rep) = 'PC1'
-write.table(scores_pc1_0rep, 'negative_pc1_score.0rep.txt', quote=FALSE, sep='\t', col.names=FALSE)
-
-
 
 contribution_pc1 = apply(signal_matrix, 1, function(x) cor(x, scores$PC1))
 contribution_pc2 = apply(signal_matrix, 1, function(x) cor(x, scores$PC2))
@@ -122,29 +104,9 @@ var.percent = eigs / sum(eigs) * 100
 
 pdf('var.percent.pdf')
 barplot(var.percent, xlab="PC", ylab="Percent Variance", names.arg=1:length(var.percent), las=1, ylim=c(0,max(var.percent)), col="blue")
-#abline(h=1/ncol(pca)*100, col="red")
+abline(h=1/ncol(pca)*100, col="red")
 dev.off()
 
 
-pca_mat = pca$x
-
-pdf('var.percent.0rep.pdf')
-eigs_0rep = apply(pca_mat[c(1,12,29,30,31),], 2, function(x) sum(x^2)/(dim(pca_mat)[1]-1))
-var.percent.rep0 = eigs_0rep / sum(eigs) * 100
-barplot(var.percent.rep0, xlab="PC", ylab="Percent Variance", names.arg=1:length(var.percent), las=1, ylim=c(0,max(var.percent)), col="blue")
-dev.off()
-
-
-pdf('var.percent.rep1.pdf')
-eigs_1rep = apply(pca_mat[c(2, 4, 6, 8, 10, 13, 15, 17, 19, 21, 23, 25, 27),], 2, function(x) sum(x^2)/(dim(pca_mat)[1]-1))
-var.percent.rep1 = eigs_1rep / sum(eigs) * 100
-barplot(var.percent.rep1, xlab="PC", ylab="Percent Variance", names.arg=1:length(var.percent), las=1, ylim=c(0,max(var.percent)), col="blue")
-dev.off()
-
-pdf('var.percent.rep2.pdf')
-eigs_2rep = apply(pca_mat[c(3, 5, 7, 9, 11, 14, 16, 18, 20, 22, 24, 26, 28),], 2, function(x) sum(x^2)/(dim(pca_mat)[1]-1))
-var.percent.rep2 = eigs_2rep / sum(eigs) * 100
-barplot(var.percent.rep2, xlab="PC", ylab="Percent Variance", names.arg=1:length(var.percent), las=1, ylim=c(0,max(var.percent)), col="blue")
-dev.off()
 
 
