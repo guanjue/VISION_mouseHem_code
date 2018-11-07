@@ -7,6 +7,7 @@ overall_upper=$5
 overall_lower=$6
 select_method=$7
 user_given_global_ref=$8
+user_given_mark_ref_list=$9
 
 
 ###### covert reads count to NB p-value
