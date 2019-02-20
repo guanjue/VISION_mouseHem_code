@@ -4,6 +4,25 @@ rna = (read.table('rnaTPM.txt', header=T))
 ccREs = (read.table('vision_cres.txt', header=F, sep='\t'))
 
 
+library(LSD)
+png('sd_vs_mean.png')
+mean_vec = apply(rna[,5:16], 1, mean)
+sd_vec = apply(rna[,5:16], 1, sd)
+heatscatter(sd_vec, mean_vec)
+abline(v=2, col='red')
+abline(h=-4, col='red')
+dev.off()
+
+
+pdf('sd_vs_mean.pdf')
+mean_vec = apply(rna[,5:16], 1, mean)
+sd_vec = apply(rna[,5:16], 1, sd)
+heatscatter(sd_vec, mean_vec)
+abline(v=2, col='red')
+abline(h=-4, col='red')
+dev.off()
+
+
 for (chr in rownames(table(rna[,1]))){
 #chr='chr19'
 t = which(rna[,1]==chr)

@@ -27,7 +27,7 @@ def write2d_array(array,output):
 repro_dict = {}
 allinfo_dict = {}
 uniq_vec = []
-for i in range(1,3):
+for i in range(1,13):
 	print(i)
 	filename = 'vision_rna.gene_ccRE.c'+str(i)+'.selected.protein_coding.txt'
 	d = read2d_array(filename, str)
