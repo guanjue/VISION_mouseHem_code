@@ -21,6 +21,29 @@ time shuf -n 1000000 gene_tss.2MB.IDEAS_states.bed > gene_tss.2MB.IDEAS_states.r
 cut -f6 gene_tss.2MB.IDEAS_states.rand.txt | awk -F '_' -v OFS='\t' '{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' > gene_tss.2MB.IDEAS_states.tpm.rand.txt
 cut -f10 gene_tss.2MB.IDEAS_states.rand.txt | awk -F '_' -v OFS='\t' '{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' > gene_tss.IDEAS_states.2MB.IDEAS_state.rand.txt
 
+
+for i in {1..10}
+do
+echo $i
+### get tss.bed tss 2MB
+bin_size=1000
+exp_win1=$(($i*$bin_size-1*$bin_size))
+exp_win2=$(($i*$bin_size))
+#time Rscript expand_bed.R /storage/home/g/gzx103/group/projects/vision/rna/rnaTPM.txt $exp_win 'gene_tss.2MB.'$i'.bed'
+time Rscript expand_bed_bin.R /storage/home/g/gzx103/group/projects/vision/rna/rnaTPM.txt $exp_win1 $exp_win2 'gene_tss.2MB.'$i'.bed'
+### 
+time bedtools window -a 'gene_tss.2MB.'$i'.bed' -b gene_IDEAS_states.inccRE.bed -w 0 > 'gene_tss.2MB.IDEAS_states.'$i'.bed'
+cut -f6 'gene_tss.2MB.IDEAS_states.'$i'.bed' | awk -F '_' -v OFS='\t' '{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' > 'gene_tss.2MB.IDEAS_states.tpm.'$i'.txt'
+cut -f10 'gene_tss.2MB.IDEAS_states.'$i'.bed' | awk -F '_' -v OFS='\t' '{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' > 'gene_tss.IDEAS_states.2MB.IDEAS_state.'$i'.txt'
+#cut -f1,2,3,4,7,8,9 'gene_tss.2MB.IDEAS_states.'$i'.bed' | awk -F '\t' -v OFS='\t' '{print $1"_"$2"_"$3"_"$4, $5"_"$6"_"$7}' > 'gene_ccRE_pair_table.'$i'.txt'
+###
+time shuf -n 1000000 'gene_tss.2MB.IDEAS_states.'$i'.bed' > 'gene_tss.2MB.IDEAS_states.rand.'$i'.txt'
+cut -f6 'gene_tss.2MB.IDEAS_states.rand.'$i'.txt' | awk -F '_' -v OFS='\t' '{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' > 'gene_tss.2MB.IDEAS_states.tpm.rand.'$i'.txt'
+cut -f10 'gene_tss.2MB.IDEAS_states.rand.'$i'.txt' | awk -F '_' -v OFS='\t' '{print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12}' > 'gene_tss.IDEAS_states.2MB.IDEAS_state.rand.'$i'.txt'
+###
+done
+
+
 ### get eRP0
 time Rscript get_coefficient.R
 

@@ -1,0 +1,32 @@
+T_CD4	100157	T_CD4
+T_CD8	100158	T_CD8
+CFU-E	1980	CFUE
+CFU-Mk	1979	CFU-MK
+CH12	35	CH12
+CH12	47	CH12
+CMP	1976	CMP
+ER4	25	ER4
+ER4	76	ER4
+ery	100146	ERY
+ery	100162	ERY_fl
+ery	100163	ERY_fl
+G1E	1925	G1E
+GMP	1977	GMP
+HPC7	100127	HPC7
+LSK	1295	LSK
+LSK	1299	LSK
+MEL 44	MEL
+MEL	69	MEL
+MEP	1978	MEP
+MK	1908	MK
+MONO	100164	MONO
+MONO	100166	MONO
+NEU	100151	NEU
+/gpfs/group/rch8/legacy/biostar/data/giardine/tfchip/CTCF
+/gpfs/group/rch8/legacy/biostar/data/giardine/tfchip/CTCF/CMP/mm10/1976/mappedTags.bw 
+cat ~/group/projects/vision/merged_input/200_noblack.11_22_2017.bed | awk -F '\t' -v OFS='\t' '{print $1,$2,$3,$1"_"$2"_"$3}' > 200_noblack.11_22_2017.withid.bed
+~/group/software/ucsc/bigWigAverageOverBed 
+bigWigAverageOverBed in.bw in.bed out.tab
+
+sort -k1,1 -k2,2n ../merged_input/merged_normed_input_mean.rounding.bedgraph > mean_round.ctrl.bedgraph
+	mean_round.ctrl.bedgraph

@@ -2,28 +2,34 @@
 ### get parameters
 args = commandArgs(trailingOnly=TRUE)
 signal_file_list = args[1]
-signal_high_color = args[2]
-signal_low_color = args[3]
-heatmap_boarder_col = args[4]
-hclust_method = args[5]
-correlation_method = args[6]
-output_filename = args[7]
+ct_color_list = args[2]
+signal_high_color = args[3]
+signal_low_color = args[4]
+heatmap_boarder_col = args[5]
+hclust_method = args[6]
+correlation_method = args[7]
+output_filename = args[8]
+figure_size = as.numeric(args[9])
+sample_size = as.numeric(args[10])
 
 #signal_file_list = 'pkn_list.txt'
+#ct_color_list = 'ct_color_list.txt'
 #signal_high_color = 'red'
 #signal_low_color = 'white'
 #heatmap_boarder_col = 'black'
 #hclust_method = 'average'
 #correlation_method = 'pearson'
 #output_filename = 'test_cor_heat.png'
+#figure_size = 35
+#sample_size = 100000
 
-#Rscript plot_correlation_heatmap_withcolorbar.R pkn_list.txt red white black average pearson test_cor_heat.png
+#Rscript plot_correlation_heatmap_withcolorbar.R file_list.txt ct_color_list.txt red white black average pearson test_0319.pdf 35 100000
 
 
 ####################################################
 ### use rect to plot heatmaps
-color_heatmap = function(color_matrix, outputname, format, border_color){
-	format(outputname, width = 35, height = 35) ### output name
+color_heatmap = function(color_matrix, outputname, format, border_color, figure_size){
+	format(outputname, width = figure_size, height = figure_size) ### output name
 	par(mar=c(10,0.5,0.5,10)) ### set heatmap margins
 	colbin_len = 10 ### column bin size
 	rowbin_len = 10 ### row bin size
@@ -47,6 +53,7 @@ color_heatmap = function(color_matrix, outputname, format, border_color){
 ####################################################
 ### get color bar based on mark
 get_color_bar_mark = function(mk){
+	mk = tolower(mk)
 	if (mk == 'h3k4me3'){
 		color_bar_mark = rgb(255/255,0/255,0/255)
 	} else if (mk == 'h3k4me1') {
@@ -73,99 +80,22 @@ get_color_bar_mark = function(mk){
 	return(color_bar_mark)
 }
 
+
+###### read ct color
+ct_color_list = read.table(ct_color_list, header = F, sep='\t')
 ####################################################
 ### get color bar based on cell type
-get_color_bar_ct = function(ct){
-	if (ct == 'LSK'){
-		color_bar_ct = rgb(34/255,139/255,34/255)
-	} else if (ct == 'HPC7') {
-		color_bar_ct = rgb(255/255,127/255,0/255)
-	} else if (ct == 'CMP') {
-		color_bar_ct = rgb(238/255,118/255,0/255)
-	} else if (ct == 'MEP') {
-		color_bar_ct = rgb(205/255,102/255,0/255)
-	} else if (ct == 'G1E') {
-		color_bar_ct = rgb(238/255,99/255,99/255)
-	} else if (ct == 'ER4') {
-		color_bar_ct = rgb(205/255,85/255,85/255)
-	} else if (ct == 'CFUE') {
-		color_bar_ct = rgb(255/255,48/255,48/255)
-	} else if (ct == 'ERY_fl') {
-		color_bar_ct = rgb(238/255,44/255,44/255)
-	} else if (ct == 'ERY') {
-		color_bar_ct = rgb(255/255,0/255,0/255)
-	} else if (ct == 'CFUMK') {
-		color_bar_ct = rgb(139/255,115/255,85/255)
-	} else if (ct == 'iMK') {
-		color_bar_ct = rgb(139/255,90/255,43/255)
-	} else if (ct == 'MK_fl') {
-		color_bar_ct = rgb(139/255,69/255,19/255)
-	} else if (ct == 'GMP') {
-		color_bar_ct = rgb(0/255,139/255,139/255)
-	} else if (ct == 'CLP') {
-		color_bar_ct = rgb(147/255,112/255,219/255)
-	} else if (ct == 'MON') {
-		color_bar_ct = rgb(24/255,116/255,205/255)
-	} else if (ct == 'NEU') {
-		color_bar_ct = rgb(79/255,148/255,205/255)
-	} else if (ct == 'B') {
-		color_bar_ct = rgb(139/255,28/255,98/255)
-	} else if (ct == 'NK') {
-		color_bar_ct = rgb(139/255,0/255,139/255)
-	} else if (ct == 'T_CD4') {
-		color_bar_ct = rgb(122/255,55/255,139/255)
-	} else if (ct == 'T_CD8') {
-		color_bar_ct = rgb(104/255,34/255,139/255)
-	} 
+get_color_bar_ct = function(ct, ct_color_list){
+	if (sum(tolower(ct_color_list[,1])==tolower(ct))!=0){
+		color0 = ct_color_list[tolower(ct_color_list[,1])==tolower(ct),2]
+		color1 = as.numeric( unlist( strsplit(as.character(color0), ',') ) )
+		color_bar_ct = rgb(color1[1]/255,color1[2]/255,color1[3]/255)
+	} else {
+		color_bar_ct = rgb(0/255,0/255,0/255)
+	}
 	return(color_bar_ct)
 }
 
-####################################################
-### get color bar based on mark
-change_ct_names = function(ct){
-	if (ct == 'B_SPL') {
-		color_bar_mark = 'B'
-	} else if (ct == 'CFU_E_ad') {
-		color_bar_mark = 'CFUE'
-	} else if (ct == 'CFUMK') {
-		color_bar_mark = 'CFUMK'
-	} else if (ct == 'CLP') {
-		color_bar_mark = 'CLP'
-	} else if (ct == 'CMP') {
-		color_bar_mark = 'CMP'
-	} else if (ct == 'ER4') {
-		color_bar_mark = 'ER4'
-	} else if (ct == 'ERY_ad') {
-		color_bar_mark = 'ERY'
-	} else if (ct == 'ERY_fl') {
-		color_bar_mark = 'ERY_fl'
-	} else if (ct == 'G1E') {
-		color_bar_mark = 'G1E'
-	} else if (ct == 'GMP') {
-		color_bar_mark = 'GMP'
-	} else if (ct == 'HPC7') {
-		color_bar_mark = 'HPC7'
-	} else if (ct == 'LSK_BM') {
-		color_bar_mark = 'LSK'
-	} else if (ct == 'MEP') {
-		color_bar_mark = 'MEP'
-	} else if (ct == 'MK_imm_ad') {
-		color_bar_mark = 'iMK'
-	} else if (ct == 'MK_mat_fl') {
-		color_bar_mark = 'MK_fl'
-	} else if (ct == 'MONO_BM') {
-		color_bar_mark = 'MON'
-	} else if (ct == 'NEU') {
-		color_bar_mark = 'NEU'
-	} else if (ct == 'NK_SPL') {
-		color_bar_mark = 'NK'
-	} else if (ct == 'T_CD4_SPL') {
-		color_bar_mark = 'T_CD4'
-	} else if (ct == 'T_CD8_SPL') {
-		color_bar_mark = 'T_CD8'
-	} 
-	return(color_bar_mark)
-}
 
 ###### read file list file
 data = read.table(signal_file_list, header = F)
@@ -175,32 +105,30 @@ color_bar_mark = c()
 color_bar_ct = c()
 ct_name_vec = c()
 for (i in c(1: dim(data)[1])){
-        file = paste( toString(data[i,1]), sep='')
+        file = as.character(data[i,3])
         print(file)
         print(i)
         ###### read signal track
         d_tmp = scan(file)
         data_matrix = cbind(data_matrix, d_tmp)
-        ###### split file name
-        filename_split_vec = unlist(strsplit(file, "[.]"))
-        ct_tmp = filename_split_vec[1]
-        ct_tmp_modified = change_ct_names(ct_tmp)
-        mk_tmp = filename_split_vec[2]
-        data_name[i] = paste(ct_tmp_modified, mk_tmp, sep='_')
+        ###### get ct name and mk name
+        ct_tmp = data[i,1]
+        mk_tmp = data[i,2]
+        data_name[i] = paste(ct_tmp, mk_tmp, sep='_')
         ##### get color bar based on mark
         color_bar_mark = rbind(color_bar_mark, get_color_bar_mark(mk_tmp))
-        color_bar_ct = rbind(color_bar_ct, get_color_bar_ct(ct_tmp_modified))
-        ct_name_vec = rbind(ct_name_vec, paste(ct_tmp_modified, mk_tmp, sep='_'))
+        color_bar_ct = rbind(color_bar_ct, get_color_bar_ct(ct_tmp, ct_color_list))
+        ct_name_vec = rbind(ct_name_vec, paste(ct_tmp, mk_tmp, sep='_'))
 }
 
 
 colnames(data_matrix) = data_name
 print(dim(data_matrix))
 set.seed(2017)
-#used_id = sample(dim(data_matrix)[1], 10000)
+used_id = sample(dim(data_matrix)[1], sample_size)
 
 ###### get correlation matrix between samples
-cor_matrix = cor(data_matrix, method = correlation_method)
+cor_matrix = cor(data_matrix[used_id,], method = correlation_method)
 ###### get distance matrix between samples from correlation matrix
 dist_cor = as.dist(1 - cor_matrix)
 ###### cluster samples 
@@ -287,9 +215,9 @@ rownames(signal_matrix_color_key) = signal_matrix_color_key[,1]
 ####################################################
 ###### plot heatmap
 heatmap_save_type = pdf
-color_heatmap(signal_matrix_color_reorder, output_filename, heatmap_save_type, heatmap_boarder_col)
+color_heatmap(signal_matrix_color_reorder, output_filename, heatmap_save_type, heatmap_boarder_col, figure_size)
 
-color_heatmap(signal_matrix_color_key, paste(output_filename,'.colorkey.pdf', sep=''), heatmap_save_type, heatmap_boarder_col)
+color_heatmap(signal_matrix_color_key, paste(output_filename,'.colorkey.pdf', sep=''), heatmap_save_type, heatmap_boarder_col, figure_size)
 
 
 

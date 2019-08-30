@@ -21,13 +21,3 @@ upset(data_binary_s[,], nsets = 10, nintersects = NA, group.by = 'degree', scale
 dev.off()
 
 
-#pdf('ccREs_intersect_num_ep300.pdf', height=5, width=20)
-#upset(data_binary_s[,c( 2,3,4, 6,7)], nsets = 5, nintersects = NA, group.by = 'degree', scale.intersections="identity", scale.sets="identity", order.by = c("freq", 'degree'),decreasing = c(TRUE, FALSE))
-#upset(data_binary_s[,c( 2,3,4,5,6)], nsets = 5, nintersects = NA, group.by = 'degree', scale.intersections="identity", scale.sets="identity", order.by = c("freq", 'degree'),decreasing = c(TRUE, FALSE))
-#dev.off()
-
-#pdf('ccREs_intersect_num_knownREs.pdf', height=5, width=20)
-#upset(data_binary_s[,c(1,2,3,4, 6  )], nsets = 5, nintersects = NA, group.by = 'degree', scale.intersections="identity", scale.sets="identity", order.by = c("freq", 'degree'),decreasing = c(TRUE, FALSE))
-#upset(data_binary_s[,c(1,2,3,4,5 )], nsets = 5, nintersects = NA, group.by = 'degree', scale.intersections="identity", scale.sets="identity", order.by = c("freq", 'degree'),decreasing = c(TRUE, FALSE))
-#dev.off()
-
