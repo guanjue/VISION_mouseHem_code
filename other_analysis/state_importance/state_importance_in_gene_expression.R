@@ -127,20 +127,20 @@ adjR2_vec_dist_27state = cbind(adjR2_vec_dist_27state, adjR2_vec_dist)
 
 
 colnames(adjR2_vec_all_27state)=c(0:26)
-pdf(paste('tss_vs_distal.all.state.importance.', gg, '.pdf', sep=''), width=15, height=5)
-boxplot(adjR2_vec_all_27state, ylim=c(-1,1))
+pdf(paste('tss_vs_distal.all.state.importance.', gg, '.pdf', sep=''), width=10, height=4)
+boxplot(adjR2_vec_all_27state, ylim=c(0,1))
 dev.off()
 print(gg)
 
 colnames(adjR2_vec_tss_27state)=c(0:26)
 pdf(paste('tss_vs_distal.tss.state.importance.', gg, '.pdf', sep=''), width=3, height=3.5)
-boxplot(adjR2_vec_tss_27state, ylim=c(-1,1))
+boxplot(adjR2_vec_tss_27state, ylim=c(0,1))
 dev.off()
 print(gg)
 
 colnames(adjR2_vec_dist_27state)=c(0:26)
 pdf(paste('tss_vs_distal.dist.state.importance.', gg, '.pdf', sep=''), width=3, height=3.5)
-boxplot(adjR2_vec_dist_27state, ylim=c(-1,1))
+boxplot(adjR2_vec_dist_27state, ylim=c(0,1))
 dev.off()
 print(gg)
 

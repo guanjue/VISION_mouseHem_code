@@ -1,0 +1,1 @@
+java -Xmx20G -jar sequnwinder.jar --species Mus musculus;mm10 --seq /storage/home/sam77/group/genomes/mm10/ --threads 10 --memepath /storage/home/sam77/group/software/meme_4.11.3/bin/ --debug --win 400 --mink 4 --mink 5 --r 50 --x 3 --a 400 --hillsthresh 0.1 --memesearchwin 16 --genregs cmp9.labeled.txt --out sequnwinder_out_cmp9
