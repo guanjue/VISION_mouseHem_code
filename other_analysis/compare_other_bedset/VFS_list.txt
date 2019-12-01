@@ -1,7 +1,0 @@
-0_X_0_S.01.bed
-0_X_F_0.01.bed
-0_X_F_S.01.bed
-V_X_0_0.01.bed
-V_X_0_S.01.bed
-V_X_F_0.01.bed
-V_X_F_S.01.bed

@@ -1,5 +1,0 @@
-tail -n+2 run_IDEAS_vision_1.state | awk -F ' ' -v OFS='\t' '{print $13}' > G1E_state.txt
-
-paste G1E_state.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.atac.pkn2_16.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.ctcf.pkn2_16.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.h3k27ac.pkn2_16.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.h3k27me3.pkn2_16.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.h3k36me3.pkn2_16.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.h3k4me1.pkn2_16.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.h3k4me3.pkn2_16.txt /storage/home/g/gzx103/group/projects/vision/pknorm_2_16lim_ref1mo_sample1mo_0424/G1E.h3k9me3.pkn2_16.txt | awk -F '\t' -v OFS='\t' '{if ($1==27) print $2,$3,$4,$5,$6,$7,$8,$9}' > G1E_state_27_signal.txt
-
-time Rscript mclust.R

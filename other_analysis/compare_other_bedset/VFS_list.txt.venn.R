@@ -1,5 +1,0 @@
-library(venneuler)
-vc = venneuler(c('S'=277033, 'F'=6756, 'F&S'=10718, 'V'=46426, 'V&S'=68075, 'V&F'=10111, 'V&F&S'=80407))
-pdf('VFS_list.txt.pdf')
-plot(vc)
-dev.off()

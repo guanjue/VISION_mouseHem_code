@@ -1,3 +1,0 @@
-EP300.CH12.sort.bed
-EP300.MEL.sort.bed
-EP300.mFL14_5.sort.bed
