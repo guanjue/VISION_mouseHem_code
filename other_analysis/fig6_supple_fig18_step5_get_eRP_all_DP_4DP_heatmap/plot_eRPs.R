@@ -67,6 +67,28 @@ pheatmap(eRP_all[rev(hclust_order),c(2:3)], color=my_colorbar_scale, breaks = br
 dev.off()
 
 
+corlo_lim_scale = max(max(abs(eRP_all)))
+corlo_lim_scale = 30
+breaksList_scale = seq(-corlo_lim_scale, corlo_lim_scale, by = 0.1)
+my_colorbar_scale=colorRampPalette(c('blue', 'white', 'red'))(n = length(breaksList_scale))
+
+dist_g3 <- dist(eRP_all[,c(6,10)], method = "euclidean") # distance matrix
+fit_g3 <- hclust(dist_g3, method="ward.D2") 
+hclust_order_g3 = fit_g3$order
+
+pdf('eRPs.2kb.hclust.with0centered.DP.gene_group3.pdf', width=1.3, height=4)
+pheatmap(eRP_all[rev(hclust_order),c(6,10)], color=my_colorbar_scale, breaks = breaksList_scale, cluster_rows = FALSE, cluster_cols = F,annotation_names_row=FALSE,annotation_names_col=FALSE,show_rownames=T,show_colnames=T)
+dev.off()
+
+corlo_lim_scale = max(max(abs(eRP_all)))
+corlo_lim_scale = 40
+breaksList_scale = seq(-corlo_lim_scale, corlo_lim_scale, by = 0.1)
+my_colorbar_scale=colorRampPalette(c('blue', 'white', 'red'))(n = length(breaksList_scale))
+
+pdf('eRPs.2kb.hclust.with0centered.DP.gene_group3.samecolor.pdf', width=1.3, height=4)
+pheatmap(eRP_all[rev(hclust_order),c(6,10)], color=my_colorbar_scale, breaks = breaksList_scale, cluster_rows = FALSE, cluster_cols = F,annotation_names_row=FALSE,annotation_names_col=FALSE,show_rownames=T,show_colnames=T)
+dev.off()
+
 
 
 createHeatmap_sort_eRP = function(parafile, statecolor = NULL, markcolor = NULL, cols=c("white","dark blue"), show=TRUE,fout=NULL, sortstate=TRUE,scale=FALSE)
