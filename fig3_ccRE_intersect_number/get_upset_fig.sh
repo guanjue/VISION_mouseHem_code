@@ -37,4 +37,4 @@ do
 done < bed_list_all.txt
 
 
-time Rscript /Users/universe/Documents/2018_BG/vision_pipeline_mouse_mm10_revision/other_analysis/fig3_ccRE_intersect_number/upset.R
+time Rscript upset.R

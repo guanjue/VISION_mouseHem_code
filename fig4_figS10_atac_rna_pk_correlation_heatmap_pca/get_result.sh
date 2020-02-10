@@ -1,0 +1,2 @@
+time Rscript atac_pk_correlation_pca_repsep.R
+time Rscript RNA_pk_correlation_pca_repsep.R

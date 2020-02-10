@@ -1,0 +1,4 @@
+atac_20cell.fun.no0.txt	VISION_ccREs
+AmitFriedman_BloodCellEnhancerCatalog_2014_mm10.bed.txt	Amit
+SCREEN_musFetLiv_E14_5_DHSccREs_20180713.bed.txt	SCREEN_FetLiv_E14_5_ccREs
+SCREEN_mouse_ccREs_mm10.all.txt	SCREEN_all
