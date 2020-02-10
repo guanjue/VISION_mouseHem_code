@@ -1,0 +1,11 @@
+B_SPL.h3k9me3rep.104.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+B_SPL.h3k9me3rep.156.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+ER4.h3k9me3rep.134.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+ER4.h3k9me3rep.59.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+ERY_fl.h3k9me3rep.117.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+ERY_fl.h3k9me3rep.144.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+G1E.h3k9me3rep.88.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+G1E.h3k9me3rep.94.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+MK_mat_fl.h3k9me3rep.125.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+MK_mat_fl.h3k9me3rep.129.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
+NEU.h3k9me3rep.100150.bamtobed5endintersect.signal	merged_normed_input.rounding.txt
