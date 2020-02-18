@@ -7,7 +7,7 @@ In support of the manuscript "An integrative view of the regulatory and transcri
 
 The manuscript is under review after re-submission to Genome Research.
 
-### The fscripts for the analyses in each figures is saved in each of the folder based on the folder name. It was compiled by Guanjue Xiang. Due to the size of the input file, some of the input files are saved in the following link: https://psu.box.com/s/3bmc2zndpm5kiwkinspr7a0chso9u1bm 
+#### The scripts for the analyses in each figures is saved in each of the folder based on the folder name. It was compiled by Guanjue Xiang. Due to the size of the input file, some of the input files are saved in the following link: https://psu.box.com/s/3bmc2zndpm5kiwkinspr7a0chso9u1bm 
 
 ### Other packages that are used in the analysis:
 ### VISION project dataset portal: usevision.org
